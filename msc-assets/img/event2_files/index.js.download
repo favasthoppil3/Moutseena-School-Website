@@ -1,0 +1,73 @@
+
+// ================================= Gallery =================================
+/**
+ * gallery isotope and filter
+ */
+
+let portfolionIsotope = document.querySelector('.gallery-isotope');
+
+if (portfolionIsotope) {
+
+  let portfolioFilter = portfolionIsotope.getAttribute('data-gallery-filter') ? portfolionIsotope.getAttribute('data-gallery-filter') : '*';
+  let portfolioLayout = portfolionIsotope.getAttribute('data-gallery-layout') ? portfolionIsotope.getAttribute('data-gallery-layout') : 'masonry';
+  let portfolioSort = portfolionIsotope.getAttribute('data-gallery-sort') ? portfolionIsotope.getAttribute('data-gallery-sort') : 'original-order';
+
+  window.addEventListener('load', () => {
+    let portfolioIsotope = new Isotope(document.querySelector('.gallery-container'), {
+      itemSelector: '.gallery-item',
+      layoutMode: portfolioLayout,
+      filter: portfolioFilter,
+      sortBy: portfolioSort
+    });
+    let menuFilters = document.querySelectorAll('.gallery-isotope .gallery-flters li');
+    menuFilters.forEach(function (el) {
+      el.addEventListener('click', function () {
+        document.querySelector('.gallery-isotope .gallery-flters .filter-active').classList.remove('filter-active');
+        this.classList.add('filter-active');
+        portfolioIsotope.arrange({
+          filter: this.getAttribute('data-filter')
+        });
+        if (typeof aos_init === 'function') {
+          aos_init();
+        }
+      }, false);
+    });
+
+  })
+}
+
+
+
+
+function aos_init() {
+  AOS.init({
+    duration: 1000,
+    easing: 'ease-in-out',
+    once: false,
+    mirror: false
+  });
+}
+window.addEventListener('load', () => {
+  aos_init();
+});
+
+
+
+// // Get the current URL pathname
+// const currentPath = window.location.pathname;
+
+// // Find the matching nav-link based on the current URL and add the active class
+// const addActiveClass = () => {
+//   const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+//   navLinks.forEach(navLink => {
+//     if (navLink.getAttribute('href') === currentPath) {
+//       navLink.classList.add('active'); // Add your custom active class here
+//     } else {
+//       navLink.classList.remove('active');
+//     }
+//   });
+// };
+
+// // Call the addActiveClass function initially and whenever the navigation changes
+// addActiveClass();
+// window.addEventListener('popstate', addActiveClass);
